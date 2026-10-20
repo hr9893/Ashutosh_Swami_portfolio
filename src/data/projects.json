@@ -1,0 +1,242 @@
+[
+  {
+    "id": "code-buddy",
+    "title": "Code Buddy",
+    "tagline": "Autonomous AI coding agent using TypeSafe JEV and LiteLLM for GitHub issue resolution",
+    "category": [
+      "AI/ML",
+      "Backend",
+      "Python"
+    ],
+    "status": "Completed",
+    "year": 2026,
+    "role": "Lead Backend Engineer",
+    "featured": true,
+    "techStack": [
+      "Python",
+      "TypeSafe JEV",
+      "LiteLLM",
+      "SQLite",
+      "Docker",
+      "GitHub API"
+    ],
+    "overview": "Code Buddy is a Python service that polls a GitHub repository for open issues, classifies each eligible issue, and routes it to a focused AI specialist. The specialists investigate the repository and open pull requests autonomously.",
+    "problem": "General-purpose local coding assistants lack bounded context and safety rails when operating on repositories, leading to unpredictable changes.",
+    "solution": "Built around bounded, purpose-specific agents (repo-explorer, coder, pr-agent) using GitHub API operations guarded by strict middleware and human approval flows.",
+    "features": [
+      "TypeSafe JEV classification",
+      "LiteLLM provider routing",
+      "Selective skill loading",
+      "Scoped tools and guardrails",
+      "Interactive terminal console"
+    ],
+    "architecture": {
+      "images": [
+        "/code-buddy-architecture.png",
+        "/code-buddy-litellm-jev-usage.png"
+      ],
+      "diagram": "GitHub -> Orchestrator -> TypeSafe JEV -> LiteLLM -> Specialist (Coder/Repo-Explorer/PR-Agent) -> Guardrails -> GitHub",
+      "notes": "Uses TypeSafe JEV for structured classification without invoking the coding LLM. Models are routed via LiteLLM based on agent role to optimize costs."
+    },
+    "challenges": [
+      {
+        "challenge": "Agents performing unsafe operations or running destructive commands",
+        "resolution": "Implemented guardrails with deterministic checks (sensitive paths, dangerous commands) and TypeSafe JEV semantic checks."
+      }
+    ],
+    "metrics": [
+      {
+        "label": "Guarded Actions",
+        "value": "100%"
+      },
+      {
+        "label": "Classification",
+        "value": "TypeSafe JEV"
+      }
+    ],
+    "links": {
+      "github": "https://github.com/hr9893/code_buddy",
+      "live": "https://code-buddy.dev",
+      "demo": null,
+      "video": null
+    },
+    "images": [
+      "/code-buddy-cover.png"
+    ]
+  },
+  {
+    "id": "ai-agent-researcher",
+    "title": "Autonomous AI Researcher",
+    "tagline": "Multi-agent system for comprehensive academic research generation",
+    "category": [
+      "AI/ML",
+      "Python"
+    ],
+    "status": "In Progress",
+    "year": 2024,
+    "role": "AI Engineer",
+    "featured": true,
+    "techStack": [
+      "Python",
+      "LangChain",
+      "OpenAI API",
+      "FastAPI",
+      "PostgreSQL"
+    ],
+    "overview": "An AI agent system that accepts a research topic, autonomously browses academic databases, synthesizes findings, and produces a cited literature review.",
+    "problem": "Literature reviews are time-consuming and often miss emerging research papers due to human oversight.",
+    "solution": "A pipeline of specialized agents (Searcher, Reader, Synthesizer, Reviewer) working in tandem to produce high-quality reviews.",
+    "features": [
+      "Multi-agent orchestration",
+      "Automated citation formatting",
+      "PDF parsing and chunking",
+      "Fact-checking layer"
+    ],
+    "architecture": {
+      "diagram": "User Input -> Planner Agent -> Worker Agents -> Synthesis -> Output",
+      "notes": "Orchestrated using LangGraph for cyclic agent workflows and state management."
+    },
+    "challenges": [
+      {
+        "challenge": "Agents hallucinating citations",
+        "resolution": "Added a strict verification step requiring every claim to map back to a retrieved context window chunk."
+      }
+    ],
+    "metrics": [
+      {
+        "label": "Time Saved per Review",
+        "value": "15 hours"
+      },
+      {
+        "label": "Citation Accuracy",
+        "value": "98%"
+      }
+    ],
+    "links": {
+      "github": "https://github.com/hr9893/ai-researcher",
+      "live": null,
+      "demo": "https://demo.ai-researcher.example.com",
+      "video": null
+    },
+    "images": [
+      "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&q=80&w=800"
+    ]
+  },
+  {
+    "id": "ecommerce-microservices",
+    "title": "E-Commerce Microservices",
+    "tagline": "Event-driven backend architecture for a high-traffic retail platform",
+    "category": [
+      "Backend",
+      "Microservices"
+    ],
+    "status": "Completed",
+    "year": 2022,
+    "role": "Backend Engineer",
+    "featured": false,
+    "techStack": [
+      "Java",
+      "Spring Boot",
+      "Kafka",
+      "MongoDB",
+      "Docker",
+      "Kubernetes"
+    ],
+    "overview": "A scalable backend system replacing a monolithic e-commerce application, built to handle flash sales and high throughput.",
+    "problem": "The old monolith crashed during Black Friday sales due to database locking and tight coupling.",
+    "solution": "Decomposed into Orders, Inventory, Users, and Payment services communicating asynchronously via Apache Kafka.",
+    "features": [
+      "Event-driven inventory reservation",
+      "Distributed tracing",
+      "Saga pattern for distributed transactions",
+      "CQRS for fast product reads"
+    ],
+    "architecture": {
+      "diagram": "API Gateway -> Services -> Kafka -> Event Handlers",
+      "notes": "Leveraged Kafka for event sourcing to ensure no data loss during service outages."
+    },
+    "challenges": [
+      {
+        "challenge": "Managing distributed transactions",
+        "resolution": "Implemented the Saga pattern using choreography to handle rollbacks gracefully if payment failed."
+      }
+    ],
+    "metrics": [
+      {
+        "label": "Throughput",
+        "value": "10k req/sec"
+      },
+      {
+        "label": "Uptime",
+        "value": "99.99%"
+      }
+    ],
+    "links": {
+      "github": "https://github.com/hr9893/spring-ecommerce",
+      "live": null,
+      "demo": null,
+      "video": null
+    },
+    "images": [
+      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=800"
+    ]
+  },
+  {
+    "id": "rag-pipeline",
+    "title": "MediBot Assistant RAG Pipeline",
+    "tagline": "Secure retrieval-augmented generation for internal company documents",
+    "category": [
+      "AI/ML",
+      "Backend"
+    ],
+    "status": "Completed",
+    "year": 2024,
+    "role": "Backend/AI Engineer",
+    "featured": true,
+    "techStack": [
+      "Python",
+      "Pinecone",
+      "LlamaIndex",
+      "FastAPI",
+      "AWS S3"
+    ],
+    "overview": "MediAssist is a role-aware hospital knowledge assistant. It combines a polished Next.js chat interface with a FastAPI retrieval-augmented generation (RAG) service, local Qdrant vector storage, SQL-backed operational data, and a Groq-powered language model.",
+    "problem": "Employees spent hours searching through Confluence and internal wikis to find standard operating procedures or medical bills patient records.",
+    "solution": "Ingested 10,000+ internal documents into a Hybrid dense and sparse vector retrieval through Qdrant, wrapped in a conversational UI/ChatBot with strict role-based access control.",
+    "features": [
+      "Semantic search",
+      "RBAC filtering",
+      "Source attribution",
+      "Hybrid search (Keyword + Vector)"
+    ],
+    "architecture": {
+      "diagram": "Documents -> Text Splitter -> Embedding Model -> Pinecone <- FastAPI <- UI",
+      "notes": "Uses metadata filtering in Pinecone to enforce access controls before passing context to the LLM."
+    },
+    "challenges": [
+      {
+        "challenge": "Poor retrieval quality on domain-specific acronyms",
+        "resolution": "Implemented hybrid search combining sparse (BM25) and dense embeddings, significantly improving recall."
+      }
+    ],
+    "metrics": [
+      {
+        "label": "Documents Indexed",
+        "value": "12,000+"
+      },
+      {
+        "label": "Query Latency",
+        "value": "< 800ms"
+      }
+    ],
+    "links": {
+      "github": "https://github.com/hr9893/enterprise-rag",
+      "live": null,
+      "demo": null,
+      "video": "https://youtube.com/watch?v=example"
+    },
+    "images": [
+      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=800"
+    ]
+  }
+]
