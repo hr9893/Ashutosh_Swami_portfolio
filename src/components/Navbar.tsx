@@ -18,8 +18,9 @@ export function Navbar() {
               Ashutosh.
             </Link>
             <nav className="hidden md:flex gap-6">
-              {/* Changed this to only have the Work link since About is now the main page */}
               <Link href="/#projects" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">Work</Link>
+              {/* Added the About link back! */}
+              <Link href="/about" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">About</Link>
             </nav>
           </div>
           <div className="flex items-center gap-4">
@@ -39,8 +40,6 @@ export function Navbar() {
       {isResumeOpen && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-md p-4 animate-in fade-in duration-200">
           <div className="bg-background border border-border/50 w-full max-w-4xl h-[85vh] rounded-2xl shadow-2xl flex flex-col overflow-hidden relative">
-
-            {/* Modal Header */}
             <div className="flex items-center justify-between p-4 border-b border-border/50 bg-secondary/30">
               <h3 className="font-semibold text-lg flex items-center gap-2">
                 <FileText className="w-5 h-5 text-purple-500" />
@@ -57,15 +56,8 @@ export function Navbar() {
                 </Button>
               </div>
             </div>
-
-            {/* Modal Body (PDF Viewer) */}
             <div className="flex-1 w-full bg-muted/10 overflow-hidden">
-              {/* If the resume has multiple pages, the iframe will automatically render an internal scrollbar */}
-              <iframe 
-                src="/resume.pdf" 
-                className="w-full h-full border-none"
-                title="Resume PDF"
-              />
+              <iframe src="/resume.pdf" className="w-full h-full border-none" title="Resume PDF" />
             </div>
           </div>
         </div>
