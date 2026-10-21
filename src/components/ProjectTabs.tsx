@@ -4,10 +4,12 @@ import { Project } from "@/types/project"
 import { motion, AnimatePresence } from "framer-motion"
 import { Card, CardContent } from "./ui/card"
 import { X } from "lucide-react"
+import ReactMarkdown from "react-markdown"
+import remarkGfm from "remark-gfm"
 
 export function ProjectTabs({ project }: { project: Project }) {
   const [activeTab, setActiveTab] = useState<"overview" | "architecture" | "challenges" | "gallery">("overview")
-  const [selectedImage, setSelectedImage] = useState<string | null>(null) // State for lightbox
+  const [selectedImage, setSelectedImage] = useState<string | null>(null)
 
   const tabs = [
     { id: "overview", label: "Overview" },
@@ -18,12 +20,12 @@ export function ProjectTabs({ project }: { project: Project }) {
 
   return (
     <div className="w-full mt-10">
-      <div className="flex space-x-2 border-b mb-6 overflow-x-auto pb-2">
+      <div className="flex space-x-2 border-b border-border/50 mb-6 overflow-x-auto pb-2">
         {tabs.map(tab => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`px-4 py-2 text-sm font-medium rounded-t-lg relative ${activeTab === tab.id ? "text-primary" : "text-muted-foreground hover:text-foreground"}`}
+            className={`px-4 py-2 text-sm font-medium rounded-t-lg relative ${activeTab === tab.id ? "text-primary" : "text-muted-foreground hover:text-foreground transition-colors"}`}
           >
             {tab.label}
             {activeTab === tab.id && (
@@ -44,15 +46,15 @@ export function ProjectTabs({ project }: { project: Project }) {
           >
             {activeTab === "overview" && (
               <div className="space-y-6">
-                <div>
+                <div className="bg-card/40 p-6 rounded-xl border border-border/50">
                   <h3 className="text-lg font-semibold mb-2">Problem</h3>
                   <p className="text-muted-foreground leading-relaxed">{project.problem}</p>
                 </div>
-                <div>
+                <div className="bg-card/40 p-6 rounded-xl border border-border/50">
                   <h3 className="text-lg font-semibold mb-2">Solution</h3>
                   <p className="text-muted-foreground leading-relaxed">{project.solution}</p>
                 </div>
-                <div>
+                <div className="bg-card/40 p-6 rounded-xl border border-border/50">
                   <h3 className="text-lg font-semibold mb-2">Key Features</h3>
                   <ul className="list-disc pl-5 text-muted-foreground space-y-1">
                     {project.features.map((f, i) => <li key={i}>{f}</li>)}
@@ -63,45 +65,64 @@ export function ProjectTabs({ project }: { project: Project }) {
 
             {activeTab === "architecture" && (
               <div className="space-y-6">
-                <Card>
+                <Card className="bg-card/40 border-border/50">
                   <CardContent className="p-6">
-                    <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wider mb-4">Architecture Diagrams</h3>
-
-                    {project.architecture.images && project.architecture.images.length > 0 ? (
-                      <div className="flex flex-col gap-8">
-                        {project.architecture.images.map((img, index) => (
-                          <div 
-                            key={index} 
-                            onClick={() => setSelectedImage(img)}
-                            className="rounded-lg overflow-hidden border bg-muted p-2 cursor-zoom-in hover:border-primary/50 transition-colors"
-                          >
-                            <img 
-                              src={img} 
-                              alt={`${project.title} Architecture ${index + 1}`} 
-                              className="w-full h-auto object-contain rounded-md" 
-                            />
+                    {project.architecture.markdown ? (
+                      <div className="prose dark:prose-invert max-w-none">
+                        <ReactMarkdown 
+                          remarkPlugins={[remarkGfm]}
+                          components={{
+                            img: ({node, ...props}) => (
+                              <img 
+                                {...props} 
+                                className="rounded-lg border border-border/50 bg-muted/50 cursor-zoom-in hover:border-primary/50 transition-colors my-4 shadow-sm"
+                                onClick={() => setSelectedImage(props.src || null)}
+                                alt={props.alt || "Architecture Diagram"}
+                              />
+                            )
+                          }}
+                        >
+                          {project.architecture.markdown}
+                        </ReactMarkdown>
+                      </div>
+                    ) : (
+                      <>
+                        <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wider mb-4">Architecture Diagrams</h3>
+                        {project.architecture.images && project.architecture.images.length > 0 ? (
+                          <div className="flex flex-col gap-8">
+                            {project.architecture.images.map((img, index) => (
+                              <div 
+                                key={index} 
+                                onClick={() => setSelectedImage(img)}
+                                className="rounded-lg overflow-hidden border border-border/50 bg-muted/50 p-2 cursor-zoom-in hover:border-primary/50 transition-colors"
+                              >
+                                <img src={img} alt={`Architecture ${index + 1}`} className="w-full h-auto object-contain rounded-md" />
+                              </div>
+                            ))}
                           </div>
-                        ))}
-                      </div>
-                    ) : project.architecture.diagram ? (
-                      <div className="p-4 bg-muted rounded-md font-mono text-sm overflow-x-auto whitespace-pre-wrap">
-                        {project.architecture.diagram}
-                      </div>
-                    ) : null}
-
+                        ) : project.architecture.diagram ? (
+                          <div className="p-4 bg-muted/50 rounded-md font-mono text-sm overflow-x-auto whitespace-pre-wrap border border-border/50">
+                            {project.architecture.diagram}
+                          </div>
+                        ) : null}
+                      </>
+                    )}
                   </CardContent>
                 </Card>
-                <div>
-                  <h3 className="text-lg font-semibold mb-2">Technical Notes</h3>
-                  <p className="text-muted-foreground leading-relaxed">{project.architecture.notes}</p>
-                </div>
+
+                {project.architecture.notes && (
+                  <div className="bg-card/40 p-6 rounded-xl border border-border/50">
+                    <h3 className="text-lg font-semibold mb-2">Technical Notes</h3>
+                    <p className="text-muted-foreground leading-relaxed">{project.architecture.notes}</p>
+                  </div>
+                )}
               </div>
             )}
 
             {activeTab === "challenges" && (
               <div className="space-y-6">
                 {project.challenges.map((c, i) => (
-                  <Card key={i}>
+                  <Card key={i} className="bg-card/40 border-border/50">
                     <CardContent className="p-6">
                       <h4 className="font-semibold text-red-500/80 mb-2">Challenge: {c.challenge}</h4>
                       <p className="text-muted-foreground"><strong>Resolution:</strong> {c.resolution}</p>
@@ -117,12 +138,12 @@ export function ProjectTabs({ project }: { project: Project }) {
                   <div 
                     key={i} 
                     onClick={() => setSelectedImage(img)}
-                    className="rounded-xl overflow-hidden border bg-muted aspect-video relative cursor-zoom-in group"
+                    className="rounded-xl overflow-hidden border border-border/50 bg-muted/50 aspect-video relative cursor-zoom-in group shadow-sm"
                   >
                     <img 
                       src={img} 
                       alt={`Gallery ${i}`} 
-                      className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300" 
+                      className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500" 
                     />
                   </div>
                 ))}
@@ -132,7 +153,6 @@ export function ProjectTabs({ project }: { project: Project }) {
         </AnimatePresence>
       </div>
 
-      {/* Lightbox Modal for viewing full size images */}
       <AnimatePresence>
         {selectedImage && (
           <motion.div
@@ -140,23 +160,23 @@ export function ProjectTabs({ project }: { project: Project }) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setSelectedImage(null)}
-            className="fixed inset-0 z-[100] flex items-center justify-center bg-background/90 backdrop-blur-sm p-4 sm:p-8 cursor-zoom-out"
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-background/90 backdrop-blur-md p-4 sm:p-8 cursor-zoom-out"
           >
             <div className="relative w-full h-full flex items-center justify-center">
               <motion.img
-                initial={{ scale: 0.95 }}
-                animate={{ scale: 1 }}
-                exit={{ scale: 0.95 }}
+                initial={{ scale: 0.95, y: 10 }}
+                animate={{ scale: 1, y: 0 }}
+                exit={{ scale: 0.95, y: 10 }}
                 src={selectedImage}
                 alt="Enlarged view"
-                className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
-                onClick={(e) => e.stopPropagation()} // Prevent clicking image from closing modal
+                className="max-w-full max-h-full object-contain rounded-lg shadow-2xl border border-white/10"
+                onClick={(e) => e.stopPropagation()} 
               />
               <button
-                className="absolute top-0 right-0 sm:top-4 sm:right-4 p-2 bg-background/50 hover:bg-background border rounded-full transition-colors cursor-pointer"
+                className="absolute top-4 right-4 p-2 bg-background/50 hover:bg-background border border-border/50 rounded-full transition-colors cursor-pointer"
                 onClick={() => setSelectedImage(null)}
               >
-                <X className="w-5 h-5" />
+                <X className="w-5 h-5 text-foreground" />
               </button>
             </div>
           </motion.div>

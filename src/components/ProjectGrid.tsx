@@ -9,8 +9,10 @@ import { ProjectCard } from "./ProjectCard"
 export function ProjectGrid({ projects }: { projects: Project[] }) {
   const { search, setSearch, selectedTech, setSelectedTech, sortBy, setSortBy, allTech, filteredProjects } = useProjectFilters(projects)
   const [view, setView] = useState<"grid" | "list">("grid")
+  const [isMounted, setIsMounted] = useState(false)
 
   useEffect(() => {
+    setIsMounted(true)
     const saved = localStorage.getItem("portfolio-view")
     if (saved === "list" || saved === "grid") setView(saved)
   }, [])
@@ -29,15 +31,22 @@ export function ProjectGrid({ projects }: { projects: Project[] }) {
         view={view} setView={handleSetView}
         resultCount={filteredProjects.length}
       />
-      
-      <motion.div layout className={`grid gap-6 ${view === "grid" ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3" : "grid-cols-1"}`}>
-        <AnimatePresence mode="popLayout">
-          {filteredProjects.map(project => (
+
+      <div className={`grid gap-6 ${view === "grid" ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3" : "grid-cols-1"}`}>
+        {/* HYDRATION FIX: Prevent layout animations from crashing on first server load */}
+        {isMounted ? (
+          <AnimatePresence mode="popLayout">
+            {filteredProjects.map(project => (
+              <ProjectCard key={project.id} project={project} view={view} />
+            ))}
+          </AnimatePresence>
+        ) : (
+          filteredProjects.map(project => (
             <ProjectCard key={project.id} project={project} view={view} />
-          ))}
-        </AnimatePresence>
-      </motion.div>
-      
+          ))
+        )}
+      </div>
+
       {filteredProjects.length === 0 && (
         <div className="text-center py-20 text-muted-foreground">
           No projects found matching your criteria.

@@ -15,6 +15,7 @@ export interface Project {
   solution: string;
   features: string[];
   architecture: {
+    markdown?: string;
     diagram?: string; // Made optional
     image?: string;
     images?: string[];
