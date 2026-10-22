@@ -19,7 +19,6 @@ export function Navbar() {
             </Link>
             <nav className="hidden md:flex gap-6">
               <Link href="/#projects" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">Work</Link>
-              {/* Added the About link back! */}
               <Link href="/about" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">About</Link>
             </nav>
           </div>
@@ -38,9 +37,12 @@ export function Navbar() {
 
       {/* Resume Modal */}
       {isResumeOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-md p-4 animate-in fade-in duration-200">
-          <div className="bg-background border border-border/50 w-full max-w-4xl h-[85vh] rounded-2xl shadow-2xl flex flex-col overflow-hidden relative">
-            <div className="flex items-center justify-between p-4 border-b border-border/50 bg-secondary/30">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-2 md:p-6 animate-in fade-in duration-200">
+
+          {/* We changed max-w-4xl to max-w-5xl (wider) and h-[85vh] to h-[90vh] (taller) */}
+          <div className="bg-background border border-border/50 w-full max-w-5xl h-[90vh] rounded-xl shadow-2xl flex flex-col overflow-hidden relative">
+
+            <div className="flex items-center justify-between p-3 md:p-4 border-b border-border/50 bg-secondary/30">
               <h3 className="font-semibold text-lg flex items-center gap-2">
                 <FileText className="w-5 h-5 text-purple-500" />
                 Resume
@@ -48,7 +50,7 @@ export function Navbar() {
               <div className="flex items-center gap-3">
                 <Button variant="outline" size="sm" asChild className="rounded-full hover:text-purple-400 hover:border-purple-400 transition-colors">
                   <a href="/resume.pdf" download="Ashutosh_Swami_Resume.pdf">
-                    <Download className="w-4 h-4 mr-2" /> Download
+                    <Download className="w-4 h-4 md:mr-2" /> <span className="hidden md:inline">Download</span>
                   </a>
                 </Button>
                 <Button variant="ghost" size="icon" onClick={() => setIsResumeOpen(false)} className="rounded-full hover:bg-red-500/10 hover:text-red-500 transition-colors">
@@ -56,9 +58,16 @@ export function Navbar() {
                 </Button>
               </div>
             </div>
-            <div className="flex-1 w-full bg-muted/10 overflow-hidden">
-              <iframe src="/resume.pdf" className="w-full h-full border-none" title="Resume PDF" />
+
+            <div className="flex-1 w-full bg-white overflow-hidden rounded-b-xl">
+              {/* Added #toolbar=0&navpanes=0&view=FitH to hide the browser UI and fit to width */}
+              <iframe 
+                src="/resume.pdf#toolbar=0&navpanes=0&view=FitH" 
+                className="w-full h-full border-none"
+                title="Resume PDF"
+              />
             </div>
+
           </div>
         </div>
       )}
